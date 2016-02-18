@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event type="preRenderView" listener="#{patrulBean.iniciarLista}" />
+	</f:metadata>
+
+	<ui:define name="titulo">Painel do usuário - Ajude a Encontrar</ui:define>
+
+	<ui:define name="div-ad">
+
+	</ui:define>
+
+	<ui:define name="wrapper">
+
+		<div id="conteudo-painel" style="float: left; width: 100%;">
+			<h:form>
+				<p:panel
+					header="SEJA BEM VINDO AO SISTEMA - VOCÊ É UM(A) PATRULHEIRO">
+					<p:growl id="growl" sticky="true" showDetail="true" escape="true"
+						autoUpdate="true" />
+					<h:panelGrid columns="3">
+						<h:outputText value="LOGIN: " />
+						<h:outputText value="#{patrulBean.usuario.emailAddress}" />
+
+						<p:commandButton value="EDITAR DADOS" style="margin-left:35px;">
+							<f:param name="id" value="#{patrulBean.usuario}" />
+						</p:commandButton>
+					</h:panelGrid>
+
+					<f:facet name="footer">
+						<p:commandButton value="SAIR" ajax="false"
+							action="#{uBean.logout}" />
+					</f:facet>
+
+				</p:panel>
+			</h:form>
+
+			<h:form id="frmTabela">
+				<p:growl id="msgTabela" escape="true" closable="true"
+					showDetail="true" />
+				<p:dataTable id="desapTable" value="#{patrulBean.listaDesaparecido}"
+					var="desap" style="margin-top: 20px"
+					emptyMessage="Nenhum desaparecido cadastrado." rows="5"
+					paginator="true" paginatorAlwaysVisible="false"
+					paginatorPosition="bottom" rowsPerPageTemplate="10,15,25">
+					<f:facet name="header">RELAÇÃO DE OCORRÊNCIAS DE DESAPARECIDOS QUE ESTÃO SENDO ACOMPANHADAS</f:facet>
+					<p:column headerText="Apelido"
+						style="text-align: center; width: 100px">
+						<h:outputText value="#{desap.apelido}" />
+					</p:column>
+					<p:column headerText="Nome">
+						<h:outputText value="#{desap.nome}" />
+					</p:column>
+					<p:column headerText="Nascimento">
+						<h:outputText value="#{desap.dtNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="Situação">
+						<h:outputText
+							value="#{desap.encontrado ? 'Encontrado' : 'Desaparecido'}" />
+					</p:column>
+
+					<p:column headerText="Detalhes"
+						style="width: 100px; text-align: center">
+						<p:commandLink title="Visualizar Detalhes" process="@this"
+							oncomplete="PF('desapDialog').show()"
+							update=":frmDialogo:desapDetail">
+							<h:outputText styleClass="ui-icon ui-icon-search"
+								style="margin:0 auto;" />
+							<f:setPropertyActionListener target="#{patrulBean.desaparecido}"
+								value="#{desap}" />
+						</p:commandLink>
+					</p:column>
+
+					<p:column style="width: 100px; text-align: center"
+						headerText="Acões">
+
+						<p:commandButton icon="ui-icon-trash" title="Excluir"
+							oncomplete="PF('confirmacaoExclusao').show()" process="@this"
+							update="@form">
+							<f:setPropertyActionListener target="#{patrulBean.desaparecido}"
+								value="#{desap}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog id="confirmacaoExclusaoDialog"
+					widgetVar="confirmacaoExclusao"
+					message="Tem certeza que quer deixar de acompanhar o caso de #{patrulBean.desaparecido.nome}?"
+					header="Exclusão de ocorrência" severity="alert">
+
+					<p:commandButton value="Sim"
+						onclick="PF('confirmacaoExclusao').hide()"
+						update=":frmTabela:desapTable" action="#{patrulBean.excluir}"></p:commandButton>
+
+					<p:button type="button" value="Não"
+						onclick="PF('confirmacaoExclusao').hide(); return false;" />
+				</p:confirmDialog>
+
+			</h:form>
+
+			<h:form id="frmDialogo">
+				<p:dialog header="Informações sobre o desaparecido"
+					closeOnEscape="true" responsive="true" widgetVar="desapDialog"
+					modal="true" resizable="false">
+					<p:growl id="msgDialog" escape="true" closable="true"
+						showDetail="true" />
+					<p:outputPanel id="desapDetail" style="text-align:center;">
+						<p:panelGrid columns="2"
+							rendered="#{not empty patrulBean.desaparecido}"
+							columnClasses="label,value" style="width: 300px; heigth:auto;">
+							<f:facet name="header">
+								<h:graphicImage
+									value="../upload/#{patrulBean.desaparecido.foto}" height="140"
+									width="140" />
+							</f:facet>
+
+							<h:outputText value="Nome:" />
+							<h:outputText value="#{patrulBean.desaparecido.nome}" />
+
+							<h:outputText value="Motivo"
+								rendered="#{not empty patrulBean.desaparecido.motivoDesap}" />
+							<h:outputText value="#{patrulBean.desaparecido.motivoDesap}"
+								rendered="#{not empty patrulBean.desaparecido.motivoDesap}" />
+
+							<h:outputText value="Altura"
+								rendered="#{patrulBean.desaparecido.descricaoDesaparecido.altura gt 0}" />
+							<h:outputText
+								value="#{patrulBean.desaparecido.descricaoDesaparecido.altura}"
+								rendered="#{patrulBean.desaparecido.descricaoDesaparecido.altura gt 0}">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+
+							<h:outputText value="Cor dos Olhos"
+								rendered="#{not empty patrulBean.desaparecido.descricaoDesaparecido.corOlhos}" />
+							<h:outputText
+								value="#{patrulBean.desaparecido.descricaoDesaparecido.corOlhos}"
+								rendered="#{not empty patrulBean.desaparecido.descricaoDesaparecido.corOlhos}" />
+
+							<h:outputText value="Descricao"
+								rendered="#{not empty patrulBean.desaparecido.descricaoDesaparecido.descricao}" />
+							<h:outputText
+								value="#{patrulBean.desaparecido.descricaoDesaparecido.descricao}"
+								rendered="#{not empty patrulBean.desaparecido.descricaoDesaparecido.descricao}" />
+
+							<p:commandLink action="#{patrulBean.localizarDesaparecido}"
+								actionListener="#{patrulBean.action}" class="btn-acompanhar"
+								title="Informar os dados e local onde foi visto o desaparecido"
+								update="msgDialog" process="frmDialogo">
+								<i class="icon-acompanhar-btn"></i> Localizar
+							</p:commandLink>
+							<h:graphicImage library="libimagens" name="compartilhar-face.png" />
+						</p:panelGrid>
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+		</div>
+
+	</ui:define>
+</ui:composition>

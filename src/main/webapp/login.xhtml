@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Sistema de apoio a família - Ajude a Encontrar</ui:define>
+
+	<ui:define name="wrapper">
+
+		<div class="login">
+
+			<div class="left">
+				<h1>Quero me cadastrar!</h1>
+
+				<a href="#" class="facebook-access" id="cadastroFB"> <i
+					class="icon-facebook-button"></i> Cadastrar com Facebook
+				</a>
+				<div class="facebook-form" id="facebook-phone" data-value="null">
+					<h:form id="form-signup-facebook" method="post">
+					<p:growl/>
+						<p:fieldset>
+							<p:panelGrid columns="2" id="grid" style="width:100%;">
+								<p:outputLabel value="Tipo" for="tipo" />
+								<p:selectOneRadio id="tipo" style="margin-left:6px;"
+									value="#{uBean.usuario.tipo}" required="true">
+									<f:selectItems value="#{uBean.tipoUsuarios}" var="tipoUsuario"
+										itemValue="#{tipoUsuario}"
+										itemLabel="#{tipoUsuario.descricao}" />
+									<p:ajax event="change" update="@form"
+										listener="#{uBean.renderizarTipo}" />
+									<f:validateRequired></f:validateRequired>
+								</p:selectOneRadio>
+							</p:panelGrid>
+							<h:form id="formresp" rendered="#{uBean.isresp}"
+								styleClass="row clearfix">
+								<p>Poderemos entrar em contato caso haja problemas por email</p>
+
+								<p:inputText styleClass="small DDD" type="tel" placeholder="DDD"
+									maxlength="2" name="DDD" id="DDDFb"
+									value="#{uBean.responsavel.ddd}"
+									onkeypress="return onlyNumbersValue(event);" />
+
+								<p:inputText styleClass="medium telefoneFb" type="tel"
+									maxlength="9" placeholder="Digite seu Telefone" name="fone"
+									id="phoneFb" value="#{uBean.responsavel.telefone}"
+									onkeypress="return onlyNumbersValue(event);" />
+							</h:form>
+
+							<!-- 	O mapa será carregado para o auto-complete -->
+							<div id="mapa" class="divmapa" style="height: 0px; width: 0px;"></div>
+
+							<h:inputHidden id="fb_username" name="fb_name"
+								value="#{uBean.usuario.name}" />
+							<h:inputHidden id="fb_email" name="fb_email"
+								value="#{uBean.usuario.emailAddress}" />
+
+
+							<div class="div-check">
+								<p:selectBooleanCheckbox value="#{uBean.usuario.newsSemanal}"
+									itemLabel="Gostaria de receber alertas por email?" />
+							</div>
+
+							<h:commandButton value="Cadastrar" id="cadastrarFB"
+								action="#{uBean.cadastrar}" />
+						</p:fieldset>
+					</h:form>
+
+				</div>
+
+				<!-- .mail-holder -->
+
+				<a href="#" class="mail-access" id="cadastroEMAIL"> Cadastrar
+					por e-mail</a>
+				<div class="mail-form">
+
+					<h:form id="form-login-cadastro">
+						<p class="error-message" id="errosDeValidacaoCadastroLogin"></p>
+
+						<p:fieldset>
+
+							<p:panelGrid columns="2" id="grid" style="width:100%;">
+								<p:outputLabel value="Tipo" for="tipo" />
+								<p:selectOneRadio id="tipo" style="margin-left:6px;"
+									value="#{uBean.usuario.tipo}" required="true">
+									<f:selectItems value="#{uBean.tipoUsuarios}" var="tipoUsuario"
+										itemValue="#{tipoUsuario}"
+										itemLabel="#{tipoUsuario.descricao}" />
+									<p:ajax event="change" update="@form"
+										listener="#{uBean.renderizarTipo}" />
+									<f:validateRequired></f:validateRequired>
+								</p:selectOneRadio>
+							</p:panelGrid>
+
+							<!-- Campos cadastro por email -->
+							<p:inputText id="name" name="name" placeholder="Digite seu nome"
+								type="text" value="#{uBean.usuario.name}" required="true"/>
+							<p:inputText id="email" name="email"
+								placeholder="Digite seu email" type="text"
+								value="#{uBean.usuario.emailAddress}" required="true"/>
+							<p:inputText type="password"
+								placeholder="Digite sua senha do Sistema" id="password"
+								name="password" value="#{uBean.usuario.senha}" required="true"/>
+							<p:inputText type="password" placeholder="Confirme sua senha"
+								id="password_check" required="true"/>
+
+							<h:form id="formresp" rendered="#{uBean.isresp}"
+								styleClass="row clearfix">
+								<p:inputText class="small DDD" type="tel" placeholder="DDD"
+									maxlength="2" name="DDD" id="DDD"
+									value="#{uBean.responsavel.ddd}"
+									onkeypress="return onlyNumbersValue(event);"></p:inputText>
+
+								<p:inputText class="medium telefone" type="tel" maxlength="9"
+									placeholder="Digite seu Telefone" name="fone" id="phone"
+									value="#{uBean.responsavel.telefone}"
+									onkeypress="return onlyNumbersValue(event);"></p:inputText>
+							</h:form>
+
+
+							<div class="div-check">
+								<p:selectBooleanCheckbox value="#{uBean.usuario.newsSemanal}"
+									itemLabel="Gostaria de receber alertas por email?" />
+							</div>
+
+							<h:commandButton value="Cadastrar"
+								action="#{uBean.cadastrar}" />
+						</p:fieldset>
+					</h:form>
+				</div>
+			</div>
+
+			<div class="right">
+				<h1>Já sou cadastrado!</h1>
+				<a href="#" class="facebook-access" id="loginFB" data-facebookid=""><i
+					class="icon-facebook-button"></i> Acessar com Facebook</a>
+
+				<h3>ou acesse com email</h3>
+				<h:form method="post" id="form-login">
+					<p class="error-message" id="errosDeValidacaoLogin"
+						style="display: none;"></p>
+
+					<h:inputHidden id="fb_username" name="fb_name"
+						value="#{uBean.usuario.name}" />
+					<h:inputHidden id="fb_email" name="fb_email"
+						value="#{uBean.usuario.emailAddress}" />
+
+					<p:inputText type="email" placeholder="Digite seu email"
+						name="j_username" id="email_login"
+						value="#{uBean.usuario.emailAddress}"></p:inputText>
+					<p:password type="password"
+						placeholder="Digite sua senha do Sistema" name="j_password"
+						id="password_login" value="#{uBean.usuario.senha}"></p:password>
+
+					<h:commandButton value="Entrar" action="#{uBean.logar}" />
+				</h:form>
+
+				<!-- login pelo facebook -->
+				<form action="/j_spring_security_check" method="post"
+					id="form-login-fb">
+					<input type="hidden" id="fb_id" name="fb_id"></input> <input
+						type="hidden" id="fb_username" name="fb_username"></input> <input
+						type="hidden" id="fb_email" name="fb_email"></input> <input
+						type="hidden" id="fb_gender" name="fb_gender"></input> <input
+						type="hidden" id="fb_access_token" name="fb_access_token"></input>
+
+					<input type="hidden" name="j_username" id="email_login_fb"></input>
+					<input type="hidden" name="j_password" id="password_login_fb"></input>
+				</form>
+			</div>
+			<!-- /.right -->
+		</div>
+
+	</ui:define>
+
+</ui:composition>

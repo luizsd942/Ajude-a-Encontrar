@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Painel do usuário - Ajude a Encontrar</ui:define>
+
+	<ui:define name="div-ad">
+
+	</ui:define>
+
+	<ui:define name="wrapper">
+		<div id="areaBuscaNoMapa" class="campos">
+			<h:form id="formCadEnderDesap">
+				<p:growl id="growl" sticky="true" showDetail="true" life="5000" />
+				<p:panel
+					header="INFORME DETALHES E O LOCAL ONDE VOCÊ LOCALIZOU O DESAPARECIDO #{patrulBean.desaparecido.nome}">
+					<h:panelGrid columns="3">
+						<p:outputLabel for="txtEndereco" value="Informe o local ou CEP" />
+						<p:inputText type="text" id="txtEndereco" style="width: 500px"
+							styleClass="txtEndereco">
+							<p:ajax event="blur" listener="#{api.inicializar}" />
+						</p:inputText>
+						<p:commandButton id="btnEndereco" styleClass="btnEndereco"
+							value="Cadastrar Endereço" style="width: auto" />
+						<p:inputText type="hidden" styleClass="txtLatitude"
+							value="#{patrulBean.assocLocaliza.latitude}" />
+						<p:inputText type="hidden" styleClass="txtLongitude"
+							value="#{patrulBean.assocLocaliza.longitude}" />
+						<p:inputText type="hidden" styleClass="txtPegaEndereco"
+							value="#{patrulBean.assocLocaliza.endereco}" />
+					</h:panelGrid>
+
+					<div style="float: left; width: 60%">
+						<h:panelGrid columns="1" style="textalign:center">
+							<h:outputText for="txtProcedimento"
+								value="Informe os procedimentos realizados ao encontrar o desaparecido" />
+							<p:inputTextarea type="text" id="txtProcedimento"
+								value="#{patrulBean.assocLocaliza.procedimento}"
+								style="width: 500px" rows="9" cols="46" autoResize="false" />
+						</h:panelGrid>
+					</div>
+
+					<!-- 	O mapa será carregado pela id="mapa" que é mapeada na função do javascript -->
+					<div id="mapa" class="divmapa"
+						style="width: 40%; height: 162px; float: right; margin: 23px 0px"></div>
+
+					<BR />
+					<p:link styleClass="btnLink" value="VOLTAR" outcome="painelpatrul"></p:link>
+					<p:commandButton value="ENVIAR INFORMAÇÕES"
+						action="#{patrulBean.cadastroLocalizar}" process="@this"
+						update="growl" />
+				</p:panel>
+
+			</h:form>
+
+		</div>
+
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head></h:head>
+
+
+<h:body>
+
+	<h:graphicImage library="libimagens" name="logo.png" id="logo" url="pricipal.jsf"/>
+	<!-- Menu Topo da Página -->
+	<h:form>
+		<p:menubar styleClass="menubar">
+			<p:menuitem value="INÍCIO" url="/" />
+			<p:menuitem value="SAIBA COMO USAR" action="/dicas?faces-redirect=true" />
+			<p:menuitem value="ENTRAR/CADASTRAR" action="/login?faces-redirect=true" rendered="#{not uBean.isLogado}"/>
+			<p:submenu label="SOBRE">
+				<p:menuitem value="O Projeto" action="/oprojeto?faces-redirect=true" />
+				<p:menuitem value="Termos de Uso" action="/termos?faces-redirect=true" />
+				<p:menuitem value="Políticas de Segurança" action="/politicas?faces-redirect=true" />
+			</p:submenu>
+			<p:submenu rendered="#{uBean.isLogado}" label="MENU DO USUÁRIO">
+				<p:menuitem value="Perfil Responável" icon="ui-icon-arrowrefresh-1-w"
+					action="/admin/painelresp?faces-redirect=true" rendered="#{uBean.isresp}"/>
+				<p:menuitem value="Perfil Patrulheiro" icon="ui-icon-arrowrefresh-1-w"
+					action="/admin/painelpatrul?faces-redirect=true" rendered="#{uBean.ispatr}"/>
+				<p:menuitem value="Sair" icon="ui-icon-arrowrefresh-1-w"
+					action="#{uBean.logout}" />
+			</p:submenu>
+		</p:menubar>
+	</h:form>
+
+
+</h:body>
+</html>

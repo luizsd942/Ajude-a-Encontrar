@@ -1,0 +1,558 @@
+@charset "utf-8";
+
+/*  Autor: Luiz Antonio
+	Aonde comeca com '#'   = id das tags 
+	Aonde comeca com '.'   = styleClass das tags
+	Aonde tem tag:atributo = vai mudar o estilo 
+	-------------------------------------------
+	.login .left ==> mudara a classe left dentro da classe login, no caso
+		de existir uma div dentro da outra...
+	 <div class="login"> <div class="left"> Conteudo </div></div>
+	#
+	
+*/
+* {
+	padding: 0px;
+	border: 0px;
+	list-style: none;
+}
+
+body {
+	font-size: 15px;
+	font-family: 'Varela Round', sans-serif;
+	margin: 0px;
+	font-weight: normal;
+	background-image: url("#{resource['libimagens/bg.png']}");
+}
+
+#wrapper {
+	width: 960px;
+	min-height: 600px;
+	margin: 0px auto; /*centralizado*/
+	padding: 0px;
+	margin: 0px auto;
+}
+
+header {
+	padding: 0px;
+	padding-left: 200px;
+	margin-bottom: 2px;
+	height: 70px;
+	background-color: #2f2f2f;
+	color: #fff;
+	box-shadow: 0px 0px 0px 1px #a8a8c6;
+	position: fixed;
+	width: 100%;
+	z-index: 20;
+	display: flex;
+}
+
+/*Exibe o MenuBar do Primefaces*/
+.ui-menu {
+	white-space: nowrap;
+	width: auto !important;
+	float: left;
+	margin-left: 30px;
+	margin-top: 12px;
+}
+
+.ui-widget {
+	font-size: 15px;
+	font-family: 'Varela Round', sans-serif;
+}
+
+#div-ad {
+	width: 100%;
+	height: auto;
+	margin-top: 72px;
+	padding-top: 2px;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #000000),
+		color-stop(1, #060600));
+	background-image: -o-linear-gradient(bottom, #c6c6c6 0%, #c6c6c8 100%);
+	background-image: -moz-linear-gradient(bottom, #00A4D1 0%, #00C5FC 100%);
+	background-image: -webkit-linear-gradient(bottom, #c6c66c 0%, #c06cc6 100%);
+	background-image: -ms-linear-gradient(bottom, #c6c7c8 0%, #0c6c66 100%);
+	background-image: linear-gradient(to bottom, #c7c7c7 0%, #c6c6c6 100%);
+	float: left;
+}
+
+#banner {
+	mangin: 0 auto;
+	padding-left: 400px;
+}
+
+#areaBuscaNoMapa {
+	float: left;
+	width: 100%;
+	height: auto;
+	margin-bottom: 2px;
+	margin-top: 2px;
+	padding: 0px;
+	position: relative;
+	border: solid 1px #c6c6c6;
+	margin-bottom: 0px;
+	z-index: 19;
+}
+
+.divmapa {
+	float: right;
+	width: 100%;
+	height: 200px;
+	margin-bottom: 8px;
+	margin-top: 2px;
+	padding: 0px;
+	position: relative;
+	z-index: 3;
+}
+
+#area-info {
+	float: left;
+	width: 100%;
+	height: auto;
+	margin-bottom: 2px;
+	text-align: center;
+	border: 1px solid #ccc;
+}
+
+#conteudo {
+	float: left;
+	width: 100%;
+	height: auto;
+	margin-bottom: 2px;
+	text-align: left;
+	border: 1px solid #ccc;
+}
+
+footer {
+	float: left;
+	font: 12px normal 'Varela Round', sans-serif;
+	text-align: center;
+	width: 100%;
+	color: #fff;
+	height: 40px;
+	position: relative;
+	padding: 0px;
+	background-color: #2f2f2f;
+	box-shadow: 0px 2px 2px #ccc;
+	position: relative;
+	clear: both;
+}
+
+#div-wizard {
+	position: relative;
+	clear: both;
+	width: 100%;
+	padding-top: 100px;
+}
+
+#div-wizard input[type="text"] {
+	width: 300px;
+	margin-bottom: 7px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+#div-wizard .ui-inputtextarea {
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+
+.textosLongos {
+	width: 780px;
+	min-heigth: 200px;
+	padding-top: 200px;
+	padding-bottom: 20px;
+	margin: 0 auto;
+	background-color: rgba(150, 150, 160, 0.1);
+}
+
+.textosLongos p {
+	font: 16px 'Varela Round', sans-serif;
+	color: #222;
+	text-shadow: 1px 1px 0 #ccc;
+	margin-bottom: 10px;
+	letter-spacing: -0.5px
+}
+
+/* =============== Estilos para campos =============== */
+h1 {
+	font: 25px 'Varela Round', sans-serif;
+	text-align: center;
+	color: #555;
+	text-shadow: 2px 2px 0 #ccc;
+	margin-bottom: 20px;
+	letter-spacing: -0.5px
+}
+
+h2 {
+	font-family: 18px 'Varela Round', sans-serif;
+	text-align: center;
+	color: #555;
+	text-shadow: 1px 1px 0 #ccc;
+	margin-bottom: 10px;
+	letter-spacing: -0.5px
+}
+
+h3 {
+	font-family: 15px 'Varela Round', sans-serif;
+	text-align: center;
+	color: #555;
+	text-shadow: 1px 1px 0 #ccc;
+	margin-bottom: 10px;
+	letter-spacing: -0.5px
+}
+
+.allright {
+	letter-spacing: 0.5px;
+	font: bold 15px;
+}
+
+.campos {
+	margin: 0px auto;
+	overflow: hidden;
+	padding: 2px 3px;
+	float: left;
+}
+
+.campos label {
+	background: #333;
+	color: #f0f0f0;
+	cursor: pointer;
+	height: 22px;
+	float: left;
+	font: 15px 'Open Sans', Arial;
+	padding-left: 2px;
+	padding-top: 8px;
+	width: 200px;
+	text-align: center;
+}
+
+.campos input[type="text"] {
+	background: #FFF;
+	color: #666;
+	display: block;
+	float: left;
+	font: 15px 'Open Sans', Arial;
+	height: 20px;
+	padding: 5px;
+	width: 510px;
+}
+
+.campos .btnEndereco {
+	background: #2679A5;
+	border-radius: 0 6px 6px 0;
+	color: #FFF;
+	cursor: pointer;
+	height: 6.em;
+	font: 15px 'Open Sans', Arial;
+	width: 210px;
+	-webkit-transition: background .2s ease-in;
+	-moz-transition: background .2s ease-in;
+	-ms-transition: background .2s ease-in;
+	-o-transition: background .2s ease-in;
+	transition: background .2s ease-in;
+}
+
+.campos .btnEndereco:hover {
+	background: #12587C
+}
+
+.btnLink {
+	padding: .3em 1em;
+	border-radius: 3px 3px 3px 3px;
+	background-color: #666666;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #868686),
+		color-stop(100%, #666666));
+	background: -webkit-linear-gradient(#868686, #666666);
+	background: -moz-linear-gradient(#868686, #666666);
+	background: -ms-linear-gradient(#868686, #666666);
+	background: -o-linear-gradient(#868686, #666666);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#868686',
+		endColorstr='#666666');
+	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#868686',
+		endColorstr='#666666');
+	background: linear-gradient(#868686, #666666);
+	outline: 0;
+	border: 1px solid #262626;
+	color: #dddddd;
+	font-weight: bold;
+	line-height: 1.5;
+}
+
+.btnLink:hover {
+	padding: .3em 1em;
+	background-color: #778877;
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #99a699),
+		color-stop(100%, #778877));
+	background: -webkit-linear-gradient(#99a699, #778877);
+	background: -moz-linear-gradient(#99a699, #778877);
+	background: -ms-linear-gradient(#99a699, #778877);
+	background: -o-linear-gradient(#99a699, #778877);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#99a699',
+		endColorstr='#778877');
+	-ms-filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#99a699',
+		endColorstr='#778877');
+	background: linear-gradient(#99a699, #778877);
+	outline: 0;
+	border: 1px solid #3c443c;
+	color: #eeffee;
+	font-weight: bold;
+	line-height: 1.4;
+}
+
+.outputLabel {
+	width: 250px;
+	height: auto;
+	color: azure;
+}
+
+.outputLabelAlerta {
+	height: auto;
+	color: orange;
+}
+
+/* =============== Estilos do autocomplete Jquery=============== */
+.ui-autocomplete {
+	background: #fff;
+	border-top: 1px solid #ccc;
+	cursor: pointer;
+	font: 15px 'Open Sans', Arial;
+	width: 606px !important;
+	position: fixed;
+}
+
+/* =========================== Estilo Login ==============================*/
+.div-login {
+	clear: both;
+	margin: 60px auto;
+	background: url("#{resource['libimagens/sep.png']}") repeat-y center 0;
+	padding-bottom: 25px;
+	margin-bottom: 0;
+	height: auto;
+}
+
+.div-login h1 {
+	text-align: center;
+	color: #804000;
+}
+
+.login .left {
+	width: 49%;
+	float: left;
+	clear: left;
+	min-height: 529px;
+	margin-bottom: 2px;
+}
+
+.login .right {
+	width: 49%;
+	float: right;
+	clear: right;
+}
+
+div {
+	display: block;
+}
+
+/*** Campos Tel e DDD do Formulário Facebook ***/
+.facebook-form input[type="tel"].small {
+	width: 24.2%;
+	margin-right: 3%;
+	float: left
+}
+
+.facebook-form input[type="tel"].medium {
+	width: 72.6%;
+	float: left
+}
+
+.facebook-form input[type="cep"].medium {
+	width: 72.6%;
+	float: left;
+	clear: both;
+}
+
+/*** Campos do Formulário, exceto Tel e DDD ***/
+.forgotPass form input, .login form input {
+	border: 1px solid #c5c5c5;
+	display: block;
+	padding-left: 21px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	font-size: 1.6em;
+	color: #333;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin-bottom: 16px;
+	border-radius: 8px;
+	font-weight: normal;
+}
+
+input, textarea, select {
+	font-size: 12px;
+	font-family: arial, sans-serif;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 200;
+}
+
+/*** Style Botao FaceBook ***/
+.facebook-access {
+	text-align: center;
+	line-height: 50px;
+	background: #3c4c84;
+	display: block;
+	font-size: 1.3em;
+	color: #fff;
+	border-radius: 8px;
+	margin-bottom: 8px;
+	margin-left: 80px;
+	font-weight: 600;
+	width: 320px;
+}
+
+.icon-facebook-button {
+	display: inline-block;
+	background-image: url("#{resource['libimagens/face_14x28.png']}");
+	width: 14px;
+	height: 28px;
+	background-position: 14px 0;
+	/*Para icones em um Sprite, mostrar a partir de 14px*/
+}
+
+/*** Style Botao Acompanhar Desaparecido ***/
+.btn-acompanhar {
+    text-align: center;
+    line-height: 18px;
+    background: #28622c;
+    display: block;
+    font-size: 0.9em;
+    color: #fff;
+    border-radius: 3px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    font-weight: 900;
+    width: 140px;
+    border: 2px;
+    height: 22px;
+    padding-top: 1px;
+    padding-left: 1px;
+}
+
+.btn-acompanhar:hover {
+	text-decoration: none;
+	opacity: .8
+}
+
+.icon-acompanhar-btn {
+	display: inline-block;
+	background-image: url("#{resource['libimagens/binoc.png']}");
+	width: 33px;
+	height: 18px;
+	background-position: 33px 0;
+	float: left;
+}
+
+a {
+	color: #0252aa;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.facebook-access:hover {
+	text-decoration: none;
+	opacity: .8
+}
+
+.mail-form input[type="text"], .mail-form input[type="tel"], .mail-form input[type="password"],
+	.formForgotPass input[type="email"] {
+	border: 1px solid #c5c5c5;
+	display: block;
+	padding-left: 21px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+	font-size: 19px;
+	color: #333;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin-bottom: 16px;
+	border-radius: 8px;
+	font-weight: normal;
+}
+
+.div-check {
+	float: left;
+	padding-top: 5px;
+}
+
+/**********  Botao cadastrar com Email ***********/
+.mail-access {
+	text-align: center;
+	line-height: 50px;
+	background: #186c00;
+	display: block;
+	padding-left: 2px;
+	font-size: 1.6em;
+	color: #cff;
+	border-radius: 8px;
+	margin-left: 80px;
+	font-weight: 600;
+	width: 320px;
+}
+
+.mail-access:hover {
+	text-decoration: none;
+	opacity: .8
+}
+
+/*** Campos Tel e DDD do Formulário Cadastro por Email ***/
+.mail-form input[type="tel"].small {
+	width: 24.2%;
+	margin-right: 3%;
+	float: left
+}
+
+.mail-form input[type="tel"].medium {
+	width: 72.6%;
+	float: left
+}
+
+.mail-form input[type="cep"].medium {
+	width: 72.6%;
+	float: left;
+	clear: both;
+}
+
+/* asdasd */
+.forgotPass form input[type="submit"], .login form input[type="submit"]
+	{
+	background: #838383;
+	height: 50px;
+	line-height: 20px;
+	font-size: 20px;
+	color: #fff;
+	font-weight: 600;
+	cursor: pointer;
+	padding-left: 0;
+	border: 0 !important;
+}
+
+.forgotPass form input, .login form input {
+	border: 1px solid #c5c5c5;
+	display: block;
+	padding-left: 21px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	font-size: 1.6em;
+	color: #333;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin-bottom: 16px;
+	border-radius: 8px;
+	font-weight: normal;
+}

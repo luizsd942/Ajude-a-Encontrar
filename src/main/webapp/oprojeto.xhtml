@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Sistema de apoio a família - Ajude a Encontrar</ui:define>
+
+	<ui:define name="div-ad">
+		<h:graphicImage library="libimagens" name="728x90.gif" id="banner"></h:graphicImage>
+	</ui:define>
+
+	<ui:define name="wrapper">
+		<h:form>
+			<div id="sobre" class="textosLongos">
+				<p:outputPanel>
+					<h2>Sobre o sistema</h2>
+					<p>O sistema é focado na busca por pessoas desaparecidas com a
+						ajuda de usuários Patrulheiros que deseijam se disponibilizar na
+						busca por algum caso de desaparecimento próximo a sua região.</p>
+				</p:outputPanel>
+
+				<p:outputPanel>
+					<h2>Objetivo do sistema</h2>
+					<p>O objetivo do sistema é disponibilizar uma ferramenta online
+						gratuita que possa ser acessada por qualquer pessoa interessada em
+						registrar desaparecidos, pesquisar e compartilhar casos em rede
+						social e ajudar a solucionar alguns casos de desaparecimentos
+						ocorridos próximo a sua residência ou ao local de onde está
+						acessando o serviço.</p>
+				</p:outputPanel>
+
+				<p:outputPanel>
+					<h2>Detalhes</h2>
+					<p>O sistema permite que os patrulheiros compartilhem novos
+						registros em sua rede social, aumentando assim a rede de
+						visualizações e incentivando outras pessoas de fora do sistema a
+						ajudar na busca ou compartilhamento.</p>
+
+					<p>Disponibilizar um mapa com os locais onde houve uma
+						ocorrência próxima ao local informado pelo usuário.</p>
+
+					<p>Outro objetivo é fazer com que o sistema não seja somente
+						uma base de dados de pessoas desaparecidas, mas que, além disso,
+						possa ajudar na busca com o apoio dos usuários voluntários para
+						essa causa nobre e acabar com o sofrimento do parente que
+						aguardapor qualquer notícia de seu ente querido.</p>
+
+				</p:outputPanel>
+
+				<p:outputPanel>
+					<h2>Motivo para a existência do sistema</h2>
+					<p>O desaparecimento de pessoas no Brasil frequentemente é
+						conceituado por parte da população como um problema somente das
+						autoridades, órgãos sociais e pelo governo. Por outro lado, há
+						pessoas que se prontificam aajudar a encontrar pessoas
+						desaparecidas, mesmo com a falta de tempo e poucas opções
+						tecnológicas que facilitem esse processo. Esse é um dos motivos
+						para a elaboração do sistema Ajude a Encontrar, pois irá auxiliar
+						os parentes na busca pelo ente querido desaparecido.</p>
+
+					<p>A intenção é beneficiar parentes de desaparecidos com uma
+						ferramenta que pode ser utilizada por eles e por voluntários que
+						residem próximo ao local do desaparecimento para acompanhar
+						informações sobre o caso. Assim, os familiares terão a sensação de
+						que não estão sozinhos nessa busca.</p>
+
+					<p>
+						Para começar, o usuário pode se cadastrar como um Patrulheiro para
+						ajudar nas buscas por um desaparecido ou, pode se cadastrar como
+						Responsável para cadastrar uma novo caso no sistema e contar com a
+						ajuda de outros usuários do sistema Ajude a Encontrar.
+						<br />
+						<p:commandLink action="/login?faces-redirect=true"
+							value="Cadastre-se aqui!" title="Cadastre-se ou faça o login com Facebook"/>
+					</p>
+
+
+
+				</p:outputPanel>
+
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Sistema de apoio a família - Ajude a Encontrar</ui:define>
+
+	<ui:define name="div-ad">
+		<h:graphicImage library="libimagens" name="banner.png" id="banner"></h:graphicImage>
+	</ui:define>
+
+	<ui:define name="wrapper">
+
+		<div id="areaBuscaNoMapa" class="campos">
+			<h:form id="form">
+				<p:panel
+					header="Faça uma busca por desaparecidos por local, acompanhe um dos casos e Ajude a Encontrar"
+					style="text-align:center">
+					<h:panelGrid columns="3">
+
+						<p:outputLabel value="Qual o raio de busca em Km?" />
+						<p:slider for="txt1" step="10" />
+						<p:inputText id="txt1" value="#{api.radius}"
+							styleClass="valRadius" style="width:60px; margin-left: 14px" />
+
+
+						<p:outputLabel id="labelEndereco" for="txtEndereco"
+							value="Informe o seu local ou CEP" />
+						<p:inputText type="text" id="txtEndereco" styleClass="txtEndereco">
+							<p:ajax event="focus" listener="#{api.inicializar}"
+								update=":formResultado" process="@this" />
+
+						</p:inputText>
+						<p:commandButton id="btnEndereco" value="Pesquisar Desaparecidos"
+							action="#{api.pesquisar}" update=":formResultado"
+							styleClass="btnEndereco" />
+
+						<p:inputText type="hidden" styleClass="txtLatitude"
+							value="#{api.lat}" />
+						<p:inputText type="hidden" styleClass="txtLongitude"
+							value="#{api.lng}" />
+						<p:inputText type="hidden" styleClass="txtPegaEndereco"
+							value="#{api.local}" />
+					</h:panelGrid>
+				</p:panel>
+
+			</h:form>
+
+		</div>
+
+		<!-- 	O mapa será carregado pela id="mapa" que é mapeada na função do javascript -->
+		<div id="mapa" class="divmapa"></div>
+
+		<div id="conteudo">
+			<h:form id="formResultado">
+				<p:messages escape="true" closable="true" />
+				<p:dataGrid var="desap" value="#{api.lista}" columns="3"
+					layout="grid" rows="15" paginator="true" id="ocorrencias"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="15,21,30">
+
+					<f:facet name="header">Ocorrências de desaparecidos próximas ao local informado: #{api.local}</f:facet>
+
+					<p:panel header="#{desap.nome}" style="text-align:center">
+						<p:panelGrid columns="1" style="width:100%">
+							<h:graphicImage value="./upload/#{desap.foto}" height="140"
+								width="140" />
+
+							<h:panelGrid columns="2">
+								<p:outputLabel value="Nascimento:" />
+								<h:outputText value="#{desap.dtNascimento}">
+									<f:convertDateTime pattern="dd/MM/yyyy"
+										timeZone="America/Sao_Paulo" />
+								</h:outputText>
+
+								<p:outputLabel value="Desaparecido(a) em:" />
+								<h:outputText value="#{desap.dtDesap}">
+									<f:convertDateTime pattern="dd/MM/yyyy"
+										timeZone="America/Sao_Paulo" />
+								</h:outputText>
+
+								<h:outputText value="Situação:" />
+								<h:outputText value="#{desap.situacaoDesap}" />
+								<p:outputLabel />
+								<p:outputLabel />
+
+								<p:outputLabel value="Local do desaparecimento:" />
+								<p:outputLabel value="#{desap.endereco}" />
+
+								<p:outputLabel value="Distância:" />
+								<p:outputLabel id="distancia" value="#{desap.exibeDistancia}" />
+							</h:panelGrid>
+
+							<p:commandLink update=":frmDialogo:desapDetail"
+								oncomplete="PF('desapDialog').show()"
+								title="Visualizar Detalhes" process="@this">
+								<h:outputText styleClass="ui-icon ui-icon-search"
+									style="margin:0 auto;" />
+								<f:setPropertyActionListener value="#{desap}"
+									target="#{api.desaparecido}" />
+							</p:commandLink>
+
+						</p:panelGrid>
+					</p:panel>
+
+				</p:dataGrid>
+			</h:form>
+
+			<h:form id="frmDialogo">
+				<p:dialog header="Informações sobre a ocorrência"
+					closeOnEscape="true" responsive="true" widgetVar="desapDialog"
+					modal="true" resizable="false">
+					<p:growl id="msgDialog" escape="true" closable="true"
+						showDetail="true" />
+					<p:outputPanel id="desapDetail"
+						style="text-align:center; width:500px">
+						<p:panelGrid columns="2" rendered="#{not empty api.desaparecido}"
+							columnClasses="label,value" style="width: 500px; heigth:auto;">
+							<f:facet name="header">
+								<p:graphicImage value="./upload/#{api.desaparecido.foto}"
+									height="240" width="240" />
+							</f:facet>
+
+							<h:outputText value="Situação" />
+							<h:outputText value="#{api.desaparecido.situacaoDesap}" />
+
+							<h:outputText value="Nome" />
+							<h:outputText value="#{api.desaparecido.nome}" />
+
+							<h:outputText value="Idade no desaparecimento" />
+							<h:outputText value="#{api.idadeDesap}" />
+
+							<h:outputText value="Idade atual" />
+							<h:outputText value="#{api.idadeAtual}" />
+
+							<h:outputText value="Motivo"
+								rendered="#{not empty api.desaparecido.motivoDesap}" />
+							<h:outputText value="#{api.desaparecido.motivoDesap}"
+								rendered="#{not empty api.desaparecido.motivoDesap}" />
+
+							<h:outputText value="Altura"
+								rendered="#{api.desaparecido.descricaoDesaparecido.altura gt 0}" />
+							<h:outputText
+								value="#{api.desaparecido.descricaoDesaparecido.altura}"
+								rendered="#{api.desaparecido.descricaoDesaparecido.altura gt 0}">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+
+							<h:outputText value="Peso aproximado"
+								rendered="#{api.desaparecido.descricaoDesaparecido.peso gt 0}" />
+							<h:outputText
+								value="#{api.desaparecido.descricaoDesaparecido.peso}"
+								rendered="#{api.desaparecido.descricaoDesaparecido.peso gt 0}">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+
+							<h:outputText value="Cor dos Olhos"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.corOlhos}" />
+							<h:outputText
+								value="#{api.desaparecido.descricaoDesaparecido.corOlhos}"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.corOlhos}" />
+
+							<h:outputText value="Cor dos Cabelos"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.corCabelo}" />
+							<h:outputText
+								value="#{api.desaparecido.descricaoDesaparecido.corCabelo}"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.corCabelo}" />
+
+							<h:outputText value="Raça"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.raca}" />
+							<h:outputText
+								value="#{api.desaparecido.descricaoDesaparecido.raca}"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.raca}" />
+
+							<h:outputText value="Descricao"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.descricao}" />
+							<h:outputText
+								value="#{api.desaparecido.descricaoDesaparecido.descricao}"
+								rendered="#{not empty api.desaparecido.descricaoDesaparecido.descricao}" />
+
+							<p:commandLink action="#{api.acompanharCaso}"
+								class="btn-acompanhar"
+								title="Acompanhar o caso e ajudar a encontrar"
+								update="msgDialog" process="frmDialogo">
+								<i class="icon-acompanhar-btn"></i> Acompanhar
+							</p:commandLink>
+							<h:graphicImage library="libimagens" name="compartilhar-face.png" />
+						</p:panelGrid>
+						<p:outputLabel styleClass="outputLabelAlerta"
+							value="ATENÇÃO: Caso tenha informações da localização de #{api.desaparecido.nome},
+							 você acompanhar o caso e informar os detalhes no sistema. 
+							 Ou	pode entrar em contado com a Delegacia de Polícia ou 
+							 Conselho Tutelar mais próximo." />
+					</p:outputPanel>
+				</p:dialog>
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>

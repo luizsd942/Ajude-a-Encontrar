@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Sistema de apoio a família - Ajude a Encontrar</ui:define>
+
+
+
+	<ui:define name="wrapper">
+		<div id="areaBuscaNoMapa" class="campos">
+			<h:form id="formCadEnderDesap">
+				<p:growl id="growl" sticky="true" showDetail="true" life="5000" />
+				<p:panel
+					header="Cadastre o local do desaparecimento, isso pode ajudar nossos patrulheiros">
+					<h:panelGrid columns="3">
+						<p:outputLabel for="txtEndereco" value="Informe o local ou CEP" />
+						<p:inputText type="text" id="txtEndereco" style="width: 500px"
+							styleClass="txtEndereco">
+							<p:ajax event="blur" listener="#{api.inicializar}" />
+						</p:inputText>
+						<p:commandButton id="btnEndereco" styleClass="btnEndereco"
+							value="Cadastrar Endereço" style="width: auto" />
+						<p:inputText type="hidden" styleClass="txtLatitude"
+							value="#{desapBean.desaparecido.latitude}" />
+						<p:inputText type="hidden" styleClass="txtLongitude"
+							value="#{desapBean.desaparecido.longitude}" />
+						<p:inputText type="hidden" styleClass="txtPegaEndereco"
+							value="#{desapBean.desaparecido.endereco}" />
+					</h:panelGrid>
+					<BR/>
+					<p:link styleClass="btnLink" value="VOLTAR"
+						outcome="cadastrodesaparecido"></p:link>
+					<p:commandButton value="FINALIZAR CADASTRO DESAPARECIDO"
+						action="#{desapBean.cadastrar}" process="@this" update="growl" />
+				</p:panel>
+
+			</h:form>
+
+		</div>
+
+		<!-- 	O mapa será carregado pela id="mapa" que é mapeada na função do javascript -->
+		<div id="mapa" class="divmapa" style="width: 400px; height: 100px"></div>
+
+
+	</ui:define>
+
+</ui:composition>

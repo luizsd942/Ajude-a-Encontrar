@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Painel do usuário - Ajude a Encontrar</ui:define>
+
+	<ui:define name="div-ad">
+
+	</ui:define>
+
+	<ui:define name="wrapper">
+
+		<div id="conteudo-painel" style="float: left; width: 100%;">
+
+			<h:form id="formpainel">
+				<p:remoteCommand name="rc" actionListener="#{desapBean.limpar}" />
+				<p:panel
+					header="SEJA BEM VINDO AO SISTEMA - VOCÊ É UM(A) RESPONSÁVEL">
+					<p:growl id="growl" sticky="true" showDetail="true" life="5000"
+						autoUpdate="true" />
+					<h:panelGrid columns="3">
+						<h:outputText value="LOGIN: " />
+						<h:outputText value="#{desapBean.responsavel.emailAddress}" />
+						
+						<p:commandButton value="EDITAR DADOS" style="margin-left:35px;">
+							<f:param name="id" value="#{desapBean.responsavel}" />
+						</p:commandButton>
+					</h:panelGrid>
+
+					<f:facet name="footer">
+						<p:link value="CADASTRAR UM DESAPARECIDO" styleClass="btnLink"
+							outcome="cadastrodesaparecido" onclick="rc()">
+						</p:link>
+						<p:commandButton value="SAIR" ajax="false"
+							action="#{uBean.logout}" style="margin-left:7px;" />
+					</f:facet>
+				</p:panel>
+			</h:form>
+
+
+			<h:form id="frmPesquisa">
+
+				<p:dataTable id="desapTable" value="#{desapBean.listaDesaparecido}"
+					var="desap" style="margin-top: 20px"
+					emptyMessage="Nenhum desaparecido cadastrado." rows="5"
+					paginator="true" paginatorAlwaysVisible="false"
+					paginatorPosition="bottom" rowsPerPageTemplate="5,10,15">
+					<f:facet name="header">RELAÇÃO DE DESAPARECIDOS CADASTRADOS</f:facet>
+					<p:column headerText="Apelido"
+						style="text-align: center; width: 100px">
+						<h:outputText value="#{desap.apelido}" />
+					</p:column>
+					<p:column headerText="Nome">
+						<h:outputText value="#{desap.nome}" />
+					</p:column>
+					<p:column headerText="Nascimento">
+						<h:outputText value="#{desap.dtNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Desaparecimento">
+						<h:outputText value="#{desap.dtDesap}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="BO">
+						<h:outputText value="#{desap.numBO}" />
+					</p:column>
+					<p:column headerText="Situação">
+						<h:outputText
+							value="#{desap.encontrado ? 'Encontrado' : 'Desaparecido'}" />
+
+						<p:commandButton icon="ui-icon-extlink"
+							title="Mudar status da ocorrência"
+							oncomplete="PF('desapSituacaoConfirm').show()"
+							style="margin-left:5px">
+							<f:setPropertyActionListener target="#{desapBean.desaparecido}"
+								value="#{desap}" />
+						</p:commandButton>
+					</p:column>
+
+					<p:column style="width: 100px; text-align: center"
+						headerText="Acões">
+						<p:commandButton action="cadastrodesaparecido?faces-redirect=true"
+							icon="ui-icon-pencil" title="Editar">
+							<f:param name="desap" value="#{desap.id}" />
+							<f:setPropertyActionListener target="#{desapBean.desaparecido}"
+								value="#{desap}" />
+							<f:setPropertyActionListener target="#{desapBean.actionProcedimento}"
+								value="editar" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash" title="Excluir"
+							oncomplete="PF('confirmacaoExclusao').show()" process="@this"
+							update="@form">
+							<f:setPropertyActionListener target="#{desapBean.desaparecido}"
+								value="#{desap}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+				<p:confirmDialog id="confirmacaoExclusaoDialog"
+					widgetVar="confirmacaoExclusao"
+					message="Tem certeza que deseja excluir o desaparecido #{desapBean.desaparecido.nome}?"
+					header="Exclusão de ocorrência" severity="alert">
+					<p:button value="Não"
+						onclick="PF('confirmacaoExclusao').hide(); return false;" />
+					<p:commandButton value="Sim" update=":frmPesquisa:desapTable"
+						onclick="PF('confirmacaoExclusao').hide()"
+						action="#{desapBean.excluir}"
+						 />
+				</p:confirmDialog>
+
+				<p:confirmDialog id="confirm" widgetVar="desapSituacaoConfirm"
+					message="Deseja alterar a situação para Encontrado?"
+					header="Alteração da situação de ocorrência" severity="alert">
+					<p:button value="Não"
+						onclick="PF('desapSituacaoConfirm').hide(); return false;" />
+					<p:commandButton value="Sim" update=":frmPesquisa:desapTable"
+						onclick="PF('desapSituacaoConfirm').hide()" action="encontrado">
+						
+					</p:commandButton>
+				</p:confirmDialog>
+
+			</h:form>
+
+		</div>
+
+	</ui:define>
+</ui:composition>

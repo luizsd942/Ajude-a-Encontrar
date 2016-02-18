@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html>
+
+<ui:composition template="/WEB-INF/template/Layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Sistema de apoio a família - Ajude a Encontrar</ui:define>
+
+	<ui:define name="wrapper">
+		<div id="div-wizard">
+			<h:form id="formcaddesap">
+				<p:growl id="growl" sticky="true" showDetail="true" life="5000" />
+
+				<p:wizard widgetVar="wiz" flowListener="#{desapBean.onFlowProcess}"
+					backLabel="Voltar" nextLabel="Avançar">
+					<p:tab id="personal" title="Dados pessoais">
+						<p:panel header="Dados pessoais">
+							<p:messages />
+							<h:panelGrid columns="2" columnClasses="label, value"
+								style="margin-bottom:10px" cellpadding="5">
+								<h:outputText value="Nome: *" />
+								<p:inputText value="#{desapBean.desaparecido.nome}"
+									required="true" label="Nome" />
+
+								<h:outputText value="Apelido " />
+								<p:inputText value="#{desapBean.desaparecido.apelido}"
+									required="false" label="Apelido" />
+
+								<h:outputLabel value="Data Nascimento: " for="dataNascimento" />
+								<p:inputText id="dataNascimento" size="10" maxlength="10"
+									value="#{desapBean.desaparecido.dtNascimento}" required="true">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:inputText>
+
+								<h:outputText value="Sexo: *" />
+								<p:selectOneMenu value="#{desapBean.desaparecido.sexo}"
+									style="width:140px;">
+									<f:selectItem itemLabel="Selecione um valor" itemValue="" />
+									<f:selectItem itemLabel="Masculino" itemValue="m" />
+									<f:selectItem itemLabel="Feminino" itemValue="f" />
+								</p:selectOneMenu>
+
+								<h:outputText value="pular para o final: " />
+								<h:selectBooleanCheckbox value="#{desapBean.skip}" />
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="address" title="Dados da ocorrência">
+						<p:panel header="Detalhes da ocorrência">
+							<p:messages />
+							<h:panelGrid columns="2" columnClasses="label, value">
+
+								<h:outputText value="Informe o BO: *"
+									title="Numero de ocorrência registrado na polícia" />
+								<p:inputText value="#{desapBean.desaparecido.numBO}"
+									required="true" />
+
+								<h:outputLabel value="Data do desaparecimento: " for="dataDesap" />
+								<p:inputText id="dataDesap" size="10" maxlength="10"
+									value="#{desapBean.desaparecido.dtDesap}" required="true">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:inputText>
+
+								<h:outputText value="Roupa usada no dia do desaparecimento: " />
+								<p:inputTextarea value="#{desapBean.desaparecido.roupaUsada}"
+									label="Detalhes do caso e do desaparecido!" rows="5" cols="31"
+									autoResize="false" />
+
+								<h:outputText value="Último local que foi visto"
+									title="Ultimo local que foi visto" />
+								<p:inputText value="#{desapBean.desaparecido.ultimoLocal}" />
+
+								<h:outputText value="Locais que costuma frequentar"
+									title="Locais de frequencia" />
+								<p:inputText value="#{desapBean.desaparecido.locaisFrequenta}" />
+
+								<h:outputText value="Motivo do desaparecimento: " />
+								<p:inputTextarea value="#{desapBean.desaparecido.motivoDesap}"
+									label="Detalhes do caso e do desaparecido!" rows="9" cols="46"
+									autoResize="false" />
+
+								<h:outputText value="pular para o final: " />
+								<h:selectBooleanCheckbox value="#{desapBean.skip}" />
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="contact" title="Descrição">
+						<p:panel header="Descrição sobre o desaparecido(a)">
+							<p:messages />
+							<h:panelGrid columns="2" columnClasses="label, value">
+								<h:outputText value="Altura: " />
+								<p:inputText value="#{desapBean.descricao.altura}"
+									label="Altura" />
+
+								<h:outputText value="Peso (Aproximado): " />
+								<p:inputText value="#{desapBean.descricao.peso}" label="Peso" />
+
+								<h:outputText value="Cor dos cabelos: " />
+								<p:inputText value="#{desapBean.descricao.corCabelo}"
+									label="Cor dos cabelos" />
+
+								<h:outputText value="Cor dos olhos: " />
+								<p:inputText value="#{desapBean.descricao.corOlhos}"
+									label="Cor dos olhos" />
+
+								<h:outputText value="Raça: " />
+								<p:inputText value="#{desapBean.descricao.raca}"
+									label="Cor da pele" />
+
+								<h:outputText value="Mais detalhes sobre o desaparecido: " />
+								<p:inputTextarea value="#{desapBean.descricao.descricao}"
+									label="Detalhes do caso e do desaparecido!" rows="9" cols="46"
+									autoResize="false" />
+
+								<h:outputText value="Deficiência" />
+								<p:selectBooleanCheckbox
+									value="#{desapBean.descricao.possuiDefic}"
+									itemLabel="Possui algum problema ou deficiência?">
+									<p:ajax event="change" update="formOutDef, formInDef"
+										listener="#{desapBean.renderizarDeficiencia}" />
+								</p:selectBooleanCheckbox>
+
+								<h:form id="formOutDef">
+									<h:outputText value="Tipo de deficiência: "
+										rendered="#{desapBean.isdeficiencia}" />
+								</h:form>
+								<h:form id="formInDef">
+									<p:inputText value="#{desapBean.descricao.tipoDefic}"
+										label="Tipo de Deficiência"
+										rendered="#{desapBean.isdeficiencia}" />
+								</h:form>
+
+
+							</h:panelGrid>
+						</p:panel>
+					</p:tab>
+
+					<p:tab id="confirm" title="Confirmação">
+						<p:panel header="Confirmação dos dados inseridos">
+							<h:panelGrid id="confirmation" columns="3"
+								columnClasses="grid,grid,grid">
+
+								<h:panelGrid columns="2" columnClasses="label, value">
+									<h:outputText value="Nome: " />
+									<h:outputText value="#{desapBean.desaparecido.nome}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Apelido: " />
+									<h:outputText value="#{desapBean.desaparecido.apelido}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Nascimento: " />
+									<h:outputText value="#{desapBean.desaparecido.dtNascimento}"
+										styleClass="outputLabel">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+
+									<h:outputText value="Sexo: " />
+									<h:outputText value="#{desapBean.desaparecido.sexo}"
+										styleClass="outputLabel" />
+								</h:panelGrid>
+
+								<h:panelGrid columns="2" columnClasses="label, value">
+
+									<h:outputText value="Número do B.O: " />
+									<h:outputText value="#{desapBean.desaparecido.numBO}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Data desaparecimento: " />
+									<h:outputText value="#{desapBean.desaparecido.dtDesap}"
+										styleClass="outputLabel">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+
+									<!-- 									<h:outputText value="Roupa que usava: " /> -->
+									<!-- 									<h:outputText value="#{desapBean.desaparecido.roupaUsada}" -->
+									<!-- 										styleClass="outputLabel" /> -->
+
+									<!-- 									<h:outputText value="Ultimo local que foi visto: " /> -->
+									<!-- 									<h:outputText value="#{desapBean.desaparecido.ultimoLocal}" -->
+									<!-- 										styleClass="outputLabel" /> -->
+
+									<h:outputText value="Locais que frequentava: " />
+									<h:outputText value="#{desapBean.desaparecido.locaisFrequenta}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Motivo: " />
+									<h:outputText value="#{desapBean.desaparecido.motivoDesap}"
+										styleClass="outputLabel" />
+
+								</h:panelGrid>
+
+								<h:panelGrid columns="2" columnClasses="label, value">
+									<h:outputText value="Altura: " />
+									<h:outputText value="#{desapBean.descricao.altura}"
+										styleClass="outputLabel">
+										<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+									</h:outputText>
+
+									<h:outputText value="Peso: " />
+									<h:outputText value="#{desapBean.descricao.peso}"
+										styleClass="outputLabel">
+										<f:convertNumber locale="pt_BR" minFractionDigits="2" />
+									</h:outputText>
+									<h:outputText value="Cor dos olhos: " />
+									<h:outputText value="#{desapBean.descricao.corOlhos}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Cor dos cabelos: " />
+									<h:outputText value="#{desapBean.descricao.corCabelo}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Raça: " />
+									<h:outputText value="#{desapBean.descricao.raca}"
+										styleClass="outputLabel" />
+
+									<h:outputText value="Deficiência: "
+										rendered="#{desapBean.descricao.possuiDefic}" />
+									<h:outputText value="#{desapBean.descricao.tipoDefic}"
+										styleClass="outputLabel"
+										rendered="#{desapBean.descricao.possuiDefic}" />
+
+									<h:outputText value="Detalhes: " />
+									<h:outputText value="#{desapBean.descricao.descricao}"
+										styleClass="outputLabel" />
+
+								</h:panelGrid>
+
+							</h:panelGrid>
+							<h:panelGrid>
+								<br />
+								<h:outputLabel
+									value="Carregue uma foto mais recente do rosto do desaparecido"
+									for="upload" />
+								<p:fileUpload id="upload" label="Inserir" cancelLabel="Cancelar"
+									uploadLabel="Confirmar"
+									fileUploadListener="#{desapBean.uploadAction}" mode="advanced"
+									allowTypes="/(\.|\/)(gif|jpe?g|png|JGP)$/" update="growl"
+									multiple="false" fileLimit="1" sizeLimit="2699999"
+									invalidFileMessage="A extensão do arquivo não é aceita, deve ter o formato JPG, GIF ou PNG"
+									invalidSizeMessage="O tamanho não pode ser maior que 2.6 MB"
+									fileLimitMessage="O Limite de fotos foi atingido." />
+
+							</h:panelGrid>
+							<br />
+							<p:link styleClass="btnLink" value="CADASTRAR ENDEREÇO"
+								outcome="local-desaparecido"></p:link>
+						</p:panel>
+					</p:tab>
+				</p:wizard>
+
+			</h:form>
+		</div>
+	</ui:define>
+</ui:composition>
